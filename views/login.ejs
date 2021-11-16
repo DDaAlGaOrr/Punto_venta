@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('templates/linksHead'); -%>
+    <title>Login</title>
+</head>
+<body>
+    <%- include('templates/header'); -%>
+    <div class="container">
+        <h1>Iniciar sesion</h1>
+        <form class="mt-5" action="/auth" method="post">
+            <div class="mb-3">
+              <label for="Email" class="form-label">User</label>
+              <input type="text" class="form-control" id="user" name="user" aria-describedby="email">
+            </div>
+            <div class="mb-3">
+              <label for="Password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary" value="login">Login</button>
+          </form>
+          <a href="register" class=" btn btn-primary mt-2">register</a>
+    </div>
+    <%if (typeof alert != "undefined"){%>
+        <script>
+            Swal.fire({
+                title:'<%= alertTitle%>',
+                text:'<%= alertMessage%>',
+                icon:'<%= alertIcon%>',
+                showConfirmButton: '<%= showConfirmButton %>',
+                timer: '<%= timer %>'
+            }).then(()=>{
+                window.location='/<%= ruta%>'
+            })
+        </script>
+        <%}%>
+
+    <%- include('templates/footer'); -%>
+    <%- include('templates/linksFooter'); -%>
+</body>
+</html>
