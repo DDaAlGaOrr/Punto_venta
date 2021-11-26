@@ -19,6 +19,18 @@ app.use(session({
 
 dotEnv.config(({path:'./env/.env'}))
 
+app.get('/chart',(req,res)=>{
+    // res.render('chart')
+    conexion.query("select country,  count(city) as city from city , country where city.country_id=country.country_id group by country.country_id",(error, results)=>{
+        if(error){
+            console.log(error)
+        }
+        else{
+            res.render('chart.ejs',{results:results})
+        }
+    })
+})
+
 app.get('/login', (req,res)=>{
     res.render("login")
 })
@@ -37,7 +49,7 @@ app.post('/register',async(req,res)=>{
     const rol = req.body.rol
     let passhash = await bcript.hash(pass,8)
 
-    conexion.query('insert into usuario set ?',{nombre_usuario:user, contrasenia:passhash, tipo:rol},async(error,results)=>{
+    conexion.query('insert into usuarios set ?',{usuario:user, contrasenia:passhash, tipo:rol},async(error,results)=>{
         if(error){
             console.log(error)
         }
@@ -62,7 +74,7 @@ app.post('/auth',async(req,res)=>{
      let passwhash = await bcript.hash(pass, 8)
 
     if(user && pass){
-        conexion.query('SELECT * FROM usuario WHERE nombre_usuario = ?' , [user], async(error,results)=>{
+        conexion.query('SELECT * FROM usuarios WHERE usuario = ?' , [user], async(error,results)=>{
             if(results.length == 0 || !(await bcript.compare(pass, results[0].contrasenia))){
                 
                 if(error){
@@ -80,7 +92,7 @@ app.post('/auth',async(req,res)=>{
                 }
             }else{
                 req.session.logged = true
-                req.session.name = results[0].nombre_usuario
+                req.session.name = results[0].usuario
                 res.render('login',{
                     
                     alert: true,
