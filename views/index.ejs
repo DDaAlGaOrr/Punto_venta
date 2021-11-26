@@ -7,12 +7,10 @@
     <%- include('templates/linksHead'); -%>
     <title>Home</title>
 </head>
-<body>
-    <%- include('templates/header'); -%>
-    <div class="container">
-        <h1>Pagina de inicio</h1>
-        
+<body>        
         <% if(login) {%>
+          <%- include('templates/header'); -%>
+          <div class="container">
             <a href="logout" class="btn btn-primary">cerrar sesion</a>
             <h1 class ="mb-5">El usuario conectado es: <strong><%= name %></strong></h1>
             <main>
@@ -95,17 +93,21 @@
                   <!-- /END THE FEATURETTES -->
               
                 </div><!-- /.container -->
+              </div>
 </main>              
                 
            <%}else{%>
-        <h1><strong><%= name %></strong></h1>
-        <a href="login" class="btn btn-primary">Iniciar sesion</a>
+        <div class="container">
+          <h1><strong><%= name %></strong></h1>
+          <a href="login" class="btn btn-primary">Iniciar sesion</a>
+        </div>
         
         <%}%>
+          
         
       
 
-    </div>
+   
     <%- include('templates/footer'); -%>
     <%- include('templates/linksFooter'); -%>
 </body>

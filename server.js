@@ -17,7 +17,7 @@ app.use(session({
     saveUninitialized:true
 }))
 
-dotEnv.config(({path:'./env/.env'}))
+
 
 app.get('/chart',(req,res)=>{
     // res.render('chart')
@@ -37,6 +37,7 @@ app.get('/login', (req,res)=>{
 app.get('/register', (req,res)=>{
     res.render("register")
 })
+
 
 app.listen(3000, ()=>{
     console.log('SERVER corriendo en http://localhost:3000');
@@ -93,16 +94,29 @@ app.post('/auth',async(req,res)=>{
             }else{
                 req.session.logged = true
                 req.session.name = results[0].usuario
-                res.render('login',{
+                if(results[0].tipo == 'admin'){
+                    res.render('login',{
+                        alert: true,
+                        alertTitle: 'Inicio sesion',
+                        alertMessage: 'Sesion iniciada',
+                        alertIcon: 'success',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        ruta: 'admin'
+                    })
+                }else{
+                    res.render('login',{
                     
-                    alert: true,
-                    alertTitle: 'Inicio sesion',
-                    alertMessage: 'Sesion iniciada',
-                    alertIcon: 'success',
-                    showConfirmButton: false,
-                    timer: 1500,
-                    ruta: ''
-                })
+                        alert: true,
+                        alertTitle: 'Inicio sesion',
+                        alertMessage: 'Sesion iniciada',
+                        alertIcon: 'success',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        ruta: ''
+                    })
+                }
+                
             }
         })
     }
@@ -125,7 +139,8 @@ app.get('/',(req,res)=>{
     if(req.session.logged){
         res.render('index',{
             login:true,
-            name:req.session.name
+            name:req.session.name,
+            rol:req.session.rol
         })
         
     }else{
@@ -135,6 +150,22 @@ app.get('/',(req,res)=>{
          })
     }
 })
+app.get('/admin', (req,res)=>{
+    if(req.session.logged){
+        res.render('home',{
+            login:true,
+            name:req.session.name
+        })
+    }else{
+        res.render('index',{
+            login:false,
+            name:'Debes iniciar sesion'
+        })
+    }
+    
+})
+
+
 app.get('/logout',(req,res)=>{
     req.session.destroy(()=>{
         res.redirect('/')
