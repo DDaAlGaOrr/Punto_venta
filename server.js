@@ -92,8 +92,9 @@ app.post('/auth',async(req,res)=>{
                     })
                 }
             }else{
-                req.session.logged = true
+                req.session.nameadmin = results[0].usuario
                 req.session.name = results[0].usuario
+                req.session.logged = true
                 if(results[0].tipo == 'admin'){
                     res.render('login',{
                         alert: true,
@@ -105,8 +106,9 @@ app.post('/auth',async(req,res)=>{
                         ruta: 'admin'
                     })
                 }else{
+                   
                     res.render('login',{
-                    
+                        
                         alert: true,
                         alertTitle: 'Inicio sesion',
                         alertMessage: 'Sesion iniciada',
@@ -140,7 +142,7 @@ app.get('/',(req,res)=>{
         res.render('index',{
             login:true,
             name:req.session.name,
-            rol:req.session.rol
+            // rol:req.session.rol
         })
         
     }else{
@@ -150,11 +152,12 @@ app.get('/',(req,res)=>{
          })
     }
 })
+// auntenticacion admin
 app.get('/admin', (req,res)=>{
     if(req.session.logged){
         res.render('home',{
             login:true,
-            name:req.session.name
+            name:req.session.nameadmin
         })
     }else{
         res.render('index',{
