@@ -20,13 +20,21 @@ app.use(session({
 
 
 app.get('/chart',(req,res)=>{
-    // res.render('chart')
-    conexion.query("select country,  count(city) as city from city , country where city.country_id=country.country_id group by country.country_id",(error, results)=>{
+ 
+    conexion.query("select u.usuario, count(v.usuarios_idusuario) as ventas from usuarios u inner join venta v on idusuario = usuarios_idusuario group by v.usuarios_idusuario;",(error, results)=>{
         if(error){
             console.log(error)
         }
         else{
-            res.render('chart.ejs',{results:results})
+            // console.log(results.length)
+            // results.forEach((v,i) => console.log(results[i]))
+            var string=JSON.stringify(results);
+            var json =  JSON.parse(string);
+            // console.log('>> json: ', json);
+            // console.log('>> user.name: ', json[0].name);
+            // req.list = json;
+            // next();
+            res.render('chart.ejs',{results:json})
         }
     })
 })
