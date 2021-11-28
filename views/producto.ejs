@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('templates/linksHead'); -%>
+    <title>registrer</title>
+</head>
+<body>
+    <div class="container">
+      <h1>Registrar Producto</h1>
+        <form class="mt-5" action="/producto" method="post">
+            <div class="mb-3">
+              <label for="id" class="form-label">Codigo producto</label>
+              <input type="text" class="form-control" id="id" name="id" aria-describedby="email">
+            </div>
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombre" name="nombre">
+            </div>
+            <div class="mb-3">
+              <label for="categoria" class="form-label">Categoria</label>
+              <input type="text" class="form-control" id="categoria" name="categoria">
+            </div>
+            <div class="mb-3">
+              <label for="preCompra" class="form-label">Precio compra</label>
+              <input type="text" class="form-control" id="preCompra" name="preCompra">
+            </div>
+            <div class="mb-3">
+              <label for="preVenta" class="form-label">Precio venta</label>
+              <input type="text" class="form-control" id="preVenta" name="preVenta">
+            </div>
+            <div class="mb-3">
+              <label for="contenido" class="form-label">Contenido</label>
+              <input type="text" class="form-control" id="contenido" name="contenido">
+            </div>
+            <div class="mb-3">
+                <label for="rol" class="form-label">Medida</label>
+                <select name="medida" id="">
+
+                    <option value="Gramos">Gramos</option>
+
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="rol" class="form-label">Proveedor</label>
+                <select name="prove" id="">
+                    <%prove.forEach(element => { %>
+                        <option value="<%= element.rfc%>"><%= element.nombre%></option>
+                    <%})%>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" value="login">Login</button>
+          </form>
+    </div>
+    <%- include('templates/footer'); -%>
+    <%- include('templates/linksFooter'); -%>
+</body>
+</html>

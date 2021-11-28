@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('templates/linksHead'); -%>
+    <title>registrer</title>
+</head>
+<body>
+    <div class="container">
+      <h1>Registrar Proveedor</h1>
+        <form class="mt-5" action="/proveedor" method="post">
+            <div class="mb-3">
+              <label for="rfc" class="form-label">RFC</label>
+              <input type="text" class="form-control" id="rfc" name="rfc" aria-describedby="email">
+            </div>
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombre" name="nombre">
+            </div>
+            <div class="mb-3">
+              <label for="pais" class="form-label">Pais</label>
+              <input type="text" class="form-control" id="pais" name="pais">
+            </div>
+            <div class="mb-3">
+              <label for="telefono" class="form-label">Telefono</label>
+              <input type="text" class="form-control" id="telefono" name="telefono">
+            </div>
+            <button type="submit" class="btn btn-primary" value="login">Login</button>
+          </form>
+          
+          <%if (typeof alert != "undefined"){%>
+            <script>
+                Swal.fire({
+                    title:'<%= alertTitle%>',
+                    text:'<%= alertMessage%>',
+                    icon:'<%= alertIcon%>',
+                    showConfirmButton: '<%= showConfirmButton %>',
+                    timer: '<%= timer %>'
+                }).then(()=>{
+                    window.location='/<%= ruta%>'
+                })
+            </script>
+            <%}%>
+
+    </div>
+    <%- include('templates/footer'); -%>
+    <%- include('templates/linksFooter'); -%>
+</body>
+</html>

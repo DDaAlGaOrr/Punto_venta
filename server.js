@@ -45,6 +45,21 @@ app.get('/login', (req,res)=>{
 app.get('/register', (req,res)=>{
     res.render("register")
 })
+app.get('/proveedor',(req,res) =>{
+    res.render('proveedor')
+})
+app.get('/producto',(req,res) =>{
+    conexion.query('select rfc,nombre from provedor',(err,results)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.render('producto',{prove:results})
+        }
+    })
+    
+})
+
 
 
 app.listen(3000, ()=>{
@@ -143,6 +158,54 @@ app.post('/auth',async(req,res)=>{
         })
     }
 })
+
+app.post('/proveedor', (req,res)=>{
+    const rfc = req.body.rfc
+    const nombre = req.body.nombre
+    const pais = req.body.pais
+    const telefono = req.body.telefono
+
+    conexion.query('insert into provedor set ?',{rfc:rfc, nombre:nombre, direccion:pais,telefono:telefono}, (err,results)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.render('proveedor',{  
+                alert: true,
+                alertTitle: 'proveedor guardado',
+                alertMessage: 'proveedor guardado',
+                alertIcon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                ruta: 'proveedor'
+            })
+        }
+    })
+})
+
+app.post('/producto',(req,res)=>{
+    const id = req.body.id
+    const nombre = req.body.nombre
+    const categoria = req.body.categoria
+    const preCompra = req.body.preCompra
+    const preVenta = req.body.preVenta
+    const contenido = req.body.contenido
+    const medida = req.body.medida
+    const prove = req.body.prove
+
+    conexion.query('INSERT INTO producto set?',{idproducto:id, nombre:nombre, categoria:categoria, precio_venta:preVenta, precio_compra:preCompra,cantidad:contenido,medida:medida,provedor_rfc1:prove}, (err,results)=>{
+        if(err){
+            console.log(err)
+        }else{
+            console.log("funciona :D")
+        }
+    })
+
+
+
+})
+
+
 
 //auntenticacion para las otras paginas
 app.get('/',(req,res)=>{
