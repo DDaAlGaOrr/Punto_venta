@@ -48,6 +48,29 @@ app.get('/register', (req,res)=>{
 app.get('/proveedor',(req,res) =>{
     res.render('proveedor')
 })
+app.get('/detalles/:id', (req,res)=>{    
+    const id = req.params.id;
+    conexion.query('SELECT * FROM producto WHERE idproducto=?',[id] , (error, results) => {
+        if (error) {
+            throw error;
+        }else{            
+            res.render('detalles', {detalle:results})           
+        }        
+    });
+});
+
+app.get('/compra/:id', (req,res)=>{    
+    const id = req.params.id;
+    const cantidad = req.body.cantidad;
+    conexion.query('SELECT * FROM producto WHERE idproducto=?',[id] , (error, results) => {
+        if (error) {
+            throw error;
+        }else{            
+            const hola = results
+            res.render('compra', {detalle:results,cantidad:cantidad})           
+        }        
+    });
+});
 app.get('/producto',(req,res) =>{
     conexion.query('select rfc,nombre from provedor',(err,results)=>{
         if(err){
@@ -197,7 +220,23 @@ app.post('/producto',(req,res)=>{
         if(err){
             console.log(err)
         }else{
-            console.log("funciona :D")
+            conexion.query('select rfc,nombre from provedor',(err,results)=>{
+                if(err){
+                    console.log(err)
+                }
+                else{
+                    res.render('producto',{
+                        prove:results,
+                        alert: true,
+                        alertTitle: 'producto guardado',
+                        alertMessage: 'producto guardado',
+                        alertIcon: 'success',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        ruta: 'producto'
+                    })
+                }
+            })
         }
     })
 
@@ -209,19 +248,28 @@ app.post('/producto',(req,res)=>{
 
 //auntenticacion para las otras paginas
 app.get('/',(req,res)=>{
-    if(req.session.logged){
-        res.render('index',{
-            login:true,
-            name:req.session.name,
-            // rol:req.session.rol
-        })
+    conexion.query('select * from producto',(err,results)=>{
+        if(err){
+            console.log(err)
+        }else{
+           
+            if(req.session.logged){
+                res.render('index',{
+                    login:true,
+                    name:req.session.name,
+                    prod:results
+                })
+                
+            }else{
+                 res.render('index',{
+                     login:false,
+                     name:'Debes iniciar sesion'
+                 })
+            }
+        }
         
-    }else{
-         res.render('index',{
-             login:false,
-             name:'Debes iniciar sesion'
-         })
-    }
+    })
+    
 })
 // auntenticacion admin
 app.get('/admin', (req,res)=>{
@@ -237,6 +285,42 @@ app.get('/admin', (req,res)=>{
         })
     }
     
+})
+
+app.post('/compra',(req,res)=>{
+    const id = req.body.id
+    conexion.query(`select * from producto where idproducto = ${id}`,(err,results)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            conexion.query("SELECT * FROM detalle_venta ORDER BY  iddetalle_venta DESC LIMIT 1",(err,results1)=>{
+                if(err){
+                    console.log(err)
+                }else{
+                    conexion.query(`INSERT INTO detalle_venta(iddetalle_venta, cantidad, precio_total, producto_idproducto1, establecimiento_idestablecimiento)values(${results1[0].iddetalle_venta + 1},1,${results[0].precio_venta},${results[0].idproducto},1)`,(err,results2)=>{
+                        if(err){
+                            console.log(err)
+                        }else{
+                            res.render('compra',{
+                                detalle: results,
+                                cantidad: 0,
+                                alert: true,
+                                alertTitle: 'venta realizada',
+                                alertMessage: 'venta realizada',
+                                alertIcon: 'success',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                ruta: ''
+                            })
+                        }
+                    })
+                    console.log(results[0].precio_venta +" "+results[0].idproducto)
+                }
+            })
+           
+        }
+    })
 })
 
 

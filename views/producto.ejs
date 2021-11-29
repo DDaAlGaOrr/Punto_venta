@@ -51,8 +51,21 @@
                     <%})%>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary" value="login">Login</button>
+            <button type="submit" class="btn btn-primary" value="login">Guardar</button>
           </form>
+          <%if (typeof alert != "undefined"){%>
+            <script>
+                Swal.fire({
+                    title:'<%= alertTitle%>',
+                    text:'<%= alertMessage%>',
+                    icon:'<%= alertIcon%>',
+                    showConfirmButton: '<%= showConfirmButton %>',
+                    timer: '<%= timer %>'
+                }).then(()=>{
+                    window.location='/<%= ruta%>'
+                })
+            </script>
+            <%}%>
     </div>
     <%- include('templates/footer'); -%>
     <%- include('templates/linksFooter'); -%>

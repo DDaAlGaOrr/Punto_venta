@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('templates/linksHead'); -%>
+    <title>Home</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card mb-3 mt-5" style="max-width: 540px;">
+            <%detalle.forEach(element => {%>
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="..." class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Nombre: <%=element.nombre%></h5>
+                  <p class="card-text">Categoria: <%=element.categoria%></p>
+                  <p class="card-text">Precio: $<%=element.precio_venta%>.00</p>
+                  <p class="card-text">Contenido: <%=element.cantidad%> <%=element.medida%></p>
+                  <a href="/compra/<%= element.idproducto%>" class=" btn btn-success mt-2">Comprar</a>
+                  
+                </div>
+              </div>
+            </div>
+            <%})%>
+          </div>
+    </div>
+   
+    
+
+
+
+
+    <%- include('templates/footer'); -%>
+    <%- include('templates/linksFooter'); -%>
+</body>
+
+</html>
