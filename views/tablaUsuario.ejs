@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('templates/linksHead'); -%>
+    <title>registrer</title>
+</head>
+<body>
+    
+    <div class="container">
+        <a href="register" class="btn btn-outline-primary mt-4"><i class='bx bxs-plus-circle bx-md'></i></a>
+        <table class="table table-bordered table-striped text-center mt-4">
+          <thead>
+            <tr class="bg-primary text-white">
+              <th scope="col">ID</th>
+              <th scope="col">USUARIO</th>
+              <th scope="col">ROL</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <% usuarios.forEach((element)=>{ %>
+            <tr>
+              <td><%= element.idusuario%></td>
+              <td><%= element.usuario %></td>
+              <td><%= element.tipo %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+    <%- include('templates/footer'); -%>
+    <%- include('templates/linksFooter'); -%>
+</body>
+</html>

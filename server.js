@@ -58,6 +58,48 @@ app.get('/detalles/:id', (req,res)=>{
         }        
     });
 });
+app.get('/tablaProveedores', (req,res)=>{
+    conexion.query('select * from provedor',(err,results)=>{
+        if(err){
+            console.log(err)
+        }else{
+            res.render('tablaProv',{proveedor:results})
+        }
+    
+    })
+    
+})
+app.get('/tablaProductos', (req,res)=>{
+    conexion.query('select * from producto',(err,results)=>{
+        if(err){
+            console.log(err)
+        }else{
+            res.render('tablaProductos',{productos:results})
+        }
+    
+    })
+    
+})
+app.get('/tablaUsuarios', (req,res)=>{
+    conexion.query('select * from usuarios',(err,results)=>{
+        if(err){
+            console.log(err)
+        }else{
+            res.render('tablaUsuario',{usuarios:results})
+        }
+    
+    })
+})
+app.get('/tablaVentas',(req,res)=>{
+    conexion.query('select p.nombre, dv.cantidad, dv.precio_total from producto p inner join detalle_venta dv on idproducto = producto_idproducto1',(err,results)=>{
+        if(err){
+            console.log(err)
+        }else{
+            res.render('tablaVentas',{venta:results})
+        }
+    
+    })
+})
 
 app.get('/compra/:id', (req,res)=>{    
     const id = req.params.id;
@@ -200,7 +242,7 @@ app.post('/proveedor', (req,res)=>{
                 alertIcon: 'success',
                 showConfirmButton: false,
                 timer: 1500,
-                ruta: 'proveedor'
+                ruta: 'tablaProveedores'
             })
         }
     })
@@ -233,7 +275,7 @@ app.post('/producto',(req,res)=>{
                         alertIcon: 'success',
                         showConfirmButton: false,
                         timer: 1500,
-                        ruta: 'producto'
+                        ruta: 'tablaProductos'
                     })
                 }
             })
