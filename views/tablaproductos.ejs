@@ -21,6 +21,7 @@
               <th scope="col">Precio de venta</th>
               <th scope="col">Contenido</th>
               <th scope="col">Stock</th>
+              <th scope="col">Acciones</th>
               
             </tr>
           </thead>
@@ -34,11 +35,28 @@
               <td>$<%= element.precio_venta %>.00</td>
               <td><%= element.cantidad %></td>
               <td><%= element.stock %></td>
+              <td>
+                <a href="eliminarPoducto/<%= element.idproducto %>" class="btn btn-outline-info"><i class='bx bxs-trash-alt'></i></a>
+
+              </td>
             </tr>
             <% }) %>
           </tbody>
         </table>
       </div>
+      <%if (typeof alert != "undefined"){%>
+        <script>
+            Swal.fire({
+                title:'<%= alertTitle%>',
+                text:'<%= alertMessage%>',
+                icon:'<%= alertIcon%>',
+                showConfirmButton: '<%= showConfirmButton %>',
+                timer: '<%= timer %>'
+            }).then(()=>{
+                window.location='/<%= ruta%>'
+            })
+        </script>
+        <%}%>
 
     <%- include('templates/footer'); -%>
     <%- include('templates/linksFooter'); -%>

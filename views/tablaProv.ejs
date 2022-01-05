@@ -18,6 +18,7 @@
               <th scope="col">Nombre proveedor</th>
               <th scope="col">Pais</th>
               <th scope="col">Telefono</th>
+              <th scope="col">Acciones</th>
               
             </tr>
           </thead>
@@ -28,6 +29,9 @@
               <td><%= element.nombre%></td>
               <td><%= element.direccion %></td>
               <td><%= element.telefono %></td>
+              <td>
+                <a href="eliminarProveedor/<%=element.rfc%>" class="btn btn-outline-info"><i class='bx bxs-trash-alt'></i></a>
+              </td>
             </tr>
             <% }) %>
           </tbody>

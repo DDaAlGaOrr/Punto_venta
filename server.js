@@ -4,6 +4,7 @@ const dotEnv = require('dotenv')
 const bcript = require('bcryptjs')
 const session = require('express-session')
 const conexion = require('./database/db')
+const  localStorage = require('local-storage');
 
 app.set('view engine','ejs');
 app.use(express.urlencoded({extended:false}));
@@ -16,8 +17,48 @@ app.use(session({
     resave:true,
     saveUninitialized:true
 }))
+// const id = []
+class Carrito {
+    constructor(clave) {
+        this.clave = clave || "productos";
+        this.productos = this.obtener();
+    }
+
+    agregar(producto) {
+        if (!this.existe(producto.id)) {
+            this.productos.push(producto);
+            this.guardar();
+        }
+    }
+
+    quitar(id) {
+        const indice = this.productos.findIndex(p => p.id === id);
+        if (indice != -1) {
+            this.productos.splice(indice, 1);
+            this.guardar();
+        }
+    }
+
+    guardar() {
+        localStorage.set(this.clave, JSON.stringify(this.productos));
+    }
+
+    obtener() {
+        const productosCodificados = localStorage.get(this.clave);
+        return JSON.parse(productosCodificados) || [];
+    }
+
+    existe(id) {
+        return this.productos.find(producto => producto.id === id);
+    }
+
+    obtenerConteo() {
+        return this.productos.length;
+    }
 
 
+}
+const prueba = new Carrito
 
 app.get('/chart',(req,res)=>{
  
@@ -58,6 +99,65 @@ app.get('/detalles/:id', (req,res)=>{
         }        
     });
 });
+app.get('/eliminarUsuario/:id',(req,res)=>{
+    const id = req.params.id
+    conexion.query(`delete from usuarios where idusuario = ${id}`,(err,results)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.render('tablaUsuarios',{
+                alert:true,
+                alertTitle:'Registro',
+                alertMessage:'Usuario borrado',
+                alertIcon:'success',
+                showConfirmButton:false,
+                timer:1500,
+                ruta:'tablaUsuarios'
+            })
+        }
+    })
+})
+app.get('/eliminarPoducto/:id',(req,res)=>{
+    const id = req.params.id
+    conexion.query(`delete from producto where idproducto = ${id}`,(err,results)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.render('tablaProductos',{
+                alert:true,
+                alertTitle:'Producto borrado',
+                alertMessage:'Producto borrado',
+                alertIcon:'success',
+                showConfirmButton:false,
+                timer:1500,
+                ruta:'tablaProductos'
+            })
+        }
+    })
+})
+app.get('/eliminarProveedor/:id',(req,res)=>{
+    const id = req.params.id
+    conexion.query(`delete from producto where idproducto = ${id}`,(err,results)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.render('/tablaProveedores',{
+                alert:true,
+                alertTitle:'Proveedor borrado',
+                alertMessage:'Proveedor borrado',
+                alertIcon:'success',
+                showConfirmButton:false,
+                timer:1500,
+                ruta:'tablaProveedores'
+            })
+        }
+    })
+})
+
+
 app.get('/tablaProveedores', (req,res)=>{
     conexion.query('select * from provedor',(err,results)=>{
         if(err){
