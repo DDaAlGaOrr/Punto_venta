@@ -5,7 +5,7 @@ const bcript = require('bcryptjs')
 const session = require('express-session')
 const conexion = require('./database/db')
 const  localStorage = require('local-storage');
-
+/* --------------------------------------------------------------------------------------------------------- */
 app.set('view engine','ejs');
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
@@ -17,6 +17,7 @@ app.use(session({
     resave:true,
     saveUninitialized:true
 }))
+/* --------------------------------------------------------------------------------------------------------- */
 // const id = []
 class Carrito {
     constructor(clave) {
@@ -58,8 +59,9 @@ class Carrito {
 
 
 }
+/* --------------------------------------------------------------------------------------------------------- */
 const prueba = new Carrito
-
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/chart',(req,res)=>{
  
     conexion.query("select u.usuario, count(v.usuarios_idusuario) as ventas from usuarios u inner join venta v on idusuario = usuarios_idusuario group by v.usuarios_idusuario;",(error, results)=>{
@@ -79,16 +81,19 @@ app.get('/chart',(req,res)=>{
         }
     })
 })
-
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/login', (req,res)=>{
     res.render("login")
 })
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/register', (req,res)=>{
     res.render("register")
 })
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/proveedor',(req,res) =>{
     res.render('proveedor')
 })
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/detalles/:id', (req,res)=>{    
     const id = req.params.id;
     conexion.query('SELECT * FROM producto WHERE idproducto=?',[id] , (error, results) => {
@@ -99,6 +104,7 @@ app.get('/detalles/:id', (req,res)=>{
         }        
     });
 });
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/eliminarUsuario/:id',(req,res)=>{
     const id = req.params.id
     conexion.query(`delete from usuarios where idusuario = ${id}`,(err,results)=>{
@@ -118,6 +124,7 @@ app.get('/eliminarUsuario/:id',(req,res)=>{
         }
     })
 })
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/eliminarPoducto/:id',(req,res)=>{
     const id = req.params.id
     conexion.query(`delete from producto where idproducto = ${id}`,(err,results)=>{
@@ -137,6 +144,7 @@ app.get('/eliminarPoducto/:id',(req,res)=>{
         }
     })
 })
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/eliminarProveedor/:id',(req,res)=>{
     const id = req.params.id
     conexion.query(`delete from producto where idproducto = ${id}`,(err,results)=>{
@@ -156,8 +164,7 @@ app.get('/eliminarProveedor/:id',(req,res)=>{
         }
     })
 })
-
-
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/tablaProveedores', (req,res)=>{
     conexion.query('select * from provedor',(err,results)=>{
         if(err){
@@ -169,6 +176,7 @@ app.get('/tablaProveedores', (req,res)=>{
     })
     
 })
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/tablaProductos', (req,res)=>{
     conexion.query('select * from producto',(err,results)=>{
         if(err){
@@ -177,9 +185,9 @@ app.get('/tablaProductos', (req,res)=>{
             res.render('tablaProductos',{productos:results})
         }
     
-    })
-    
+    })  
 })
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/tablaUsuarios', (req,res)=>{
     conexion.query('select * from usuarios',(err,results)=>{
         if(err){
@@ -190,6 +198,7 @@ app.get('/tablaUsuarios', (req,res)=>{
     
     })
 })
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/tablaVentas',(req,res)=>{
     conexion.query('select p.nombre, dv.cantidad, dv.precio_total from producto p inner join detalle_venta dv on idproducto = producto_idproducto1',(err,results)=>{
         if(err){
@@ -200,7 +209,7 @@ app.get('/tablaVentas',(req,res)=>{
     
     })
 })
-
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/compra/:id', (req,res)=>{    
     const id = req.params.id;
     const cantidad = req.body.cantidad;
@@ -213,6 +222,7 @@ app.get('/compra/:id', (req,res)=>{
         }        
     });
 });
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/producto',(req,res) =>{
     conexion.query('select rfc,nombre from provedor',(err,results)=>{
         if(err){
@@ -224,13 +234,11 @@ app.get('/producto',(req,res) =>{
     })
     
 })
-
-
-
+/* --------------------------------------------------------------------------------------------------------- */
 app.listen(3000, ()=>{
     console.log('SERVER corriendo en http://localhost:3000');
 });
-
+/* --------------------------------------------------------------------------------------------------------- */
 //registrar usuarios
 app.post('/register',async(req,res)=>{
     const user = req.body.user
@@ -255,7 +263,7 @@ app.post('/register',async(req,res)=>{
         }
     })
 })
-
+/* --------------------------------------------------------------------------------------------------------- */
 // autenticacion 
 app.post('/auth',async(req,res)=>{
     const user = req.body.user
@@ -323,7 +331,7 @@ app.post('/auth',async(req,res)=>{
         })
     }
 })
-
+/* --------------------------------------------------------------------------------------------------------- */
 app.post('/proveedor', (req,res)=>{
     const rfc = req.body.rfc
     const nombre = req.body.nombre
@@ -347,7 +355,7 @@ app.post('/proveedor', (req,res)=>{
         }
     })
 })
-
+/* --------------------------------------------------------------------------------------------------------- */
 app.post('/producto',(req,res)=>{
     const id = req.body.id
     const nombre = req.body.nombre
@@ -381,13 +389,8 @@ app.post('/producto',(req,res)=>{
             })
         }
     })
-
-
-
 })
-
-
-
+/* --------------------------------------------------------------------------------------------------------- */
 //auntenticacion para las otras paginas
 app.get('/',(req,res)=>{
     conexion.query('select * from producto',(err,results)=>{
@@ -408,11 +411,10 @@ app.get('/',(req,res)=>{
                      name:'Debes iniciar sesion'
                  })
             }
-        }
-        
-    })
-    
+        }  
+    }) 
 })
+/* --------------------------------------------------------------------------------------------------------- */
 // auntenticacion admin
 app.get('/admin', (req,res)=>{
     if(req.session.logged){
@@ -425,10 +427,9 @@ app.get('/admin', (req,res)=>{
             login:false,
             name:'Debes iniciar sesion'
         })
-    }
-    
+    }  
 })
-
+/* --------------------------------------------------------------------------------------------------------- */
 app.post('/compra',(req,res)=>{
     const id = req.body.id
     conexion.query(`select * from producto where idproducto = ${id}`,(err,results)=>{
@@ -459,13 +460,11 @@ app.post('/compra',(req,res)=>{
                     })
                     console.log(results[0].precio_venta +" "+results[0].idproducto)
                 }
-            })
-           
+            }) 
         }
     })
 })
-
-
+/* --------------------------------------------------------------------------------------------------------- */
 app.get('/logout',(req,res)=>{
     req.session.destroy(()=>{
         res.redirect('/')

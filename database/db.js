@@ -1,5 +1,5 @@
 const mysql = require('mysql')
-
+/* --------------------------------------------------------------------------------------------------------- */
 const conexion = mysql.createConnection({
     host:'localhost',
     user:'root',
@@ -7,7 +7,7 @@ const conexion = mysql.createConnection({
     database:'mydb'
     // database:'sakila'
 })
-
+/* --------------------------------------------------------------------------------------------------------- */
 conexion.connect((error)=>{
     if(error){
         console.log('error en la conexion')
@@ -17,5 +17,5 @@ conexion.connect((error)=>{
         console.log('conectado')
     }
 })
-
+/* --------------------------------------------------------------------------------------------------------- */
 module.exports = conexion;
